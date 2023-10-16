@@ -10,14 +10,14 @@
 <body class="container">
     <div class="box">
         <div class="form">
-            <form>
+            <form action="/login" method="post">
                 <label class="form-label">Enter Your Email </label>
                 <br>
-                <input type="email" placeholder="Email" class="form-control">
+                <input type="email" placeholder="Email" class="form-control" name="email" required>
                 <br>
                 <label class="form-label">Enter Password</label>
                 <br>
-                <input type="password" placeholder="password" class="form-control">
+                <input type="password" placeholder="password" class="form-control" name="password" required>
                 <br>
                 <button id="button" type="submit" class="btn btn-primary">LOGIN</button>
                 <br>

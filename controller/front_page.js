@@ -15,8 +15,7 @@ exports.PostSignup=(req,res,next)=>{
         email:email,
         password:password
     }).then(()=>{
-        console.log('user created');
-        res.redirect('/');
+        res.redirect('/login');
     }).catch(()=>{
         res.send('This email already have a account');
     })
@@ -24,4 +23,22 @@ exports.PostSignup=(req,res,next)=>{
 
 exports.getLogin=(req,res)=>{
     res.sendFile(path.join(__dirname,'..','views','login.html'))
+}
+
+exports.PostLogin = (req,res)=>{
+    const Email = req.body.email;
+    const psw = req.body.password;
+    User.findAll({where:{
+        email:Email
+    }}).then((user)=>{
+        if(user[0].password===psw){
+            res.send('Login Succesful')
+        }
+        else{
+            res.status(401).send('User not authorized');
+        }
+    }).catch(()=>{
+        res.status(404).send('User not Found')
+    })
+
 }

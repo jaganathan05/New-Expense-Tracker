@@ -8,4 +8,6 @@ router.get('/signup',front_page_controller.getSignup);
 
 router.get('/login',front_page_controller.getLogin);
 
+router.post('/login',front_page_controller.PostLogin)
+
 module.exports=router;
