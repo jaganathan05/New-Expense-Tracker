@@ -34,3 +34,9 @@ input[type=text],input[type=email],input[type=password]{
 button{
     width: 100%;
 }
+#login{
+    padding-left: 40%;
+}
+p{
+    padding-left: 10%;
+}

@@ -1,0 +1,40 @@
+body{
+    background-color: aqua;
+}
+.form{
+    border: 20px solid rgb(119, 0, 255);
+    padding: 40px;
+    border-radius: 25px;
+}
+.box{
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    height: 600px;
+}
+label{
+    color: #6200ff;
+    font-size: x-large;
+    font-family:serif; 
+}
+input[type=email]::placeholder,input[type=password]::placeholder{
+    color: rgb(68, 0, 255);
+    font-size: medium;
+    }
+input[type=email],input[type=password]{
+        color: rgb(94, 11, 57);
+        font-size:large;
+}
+#button:hover{
+    background-color: rgb(2, 59, 16);
+    color: yellow;
+}
+button{
+    width: 100%;
+}
+#signup{
+    padding-left: 40%;
+}
+p{
+    padding-left: 20%;
+}

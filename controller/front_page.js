@@ -1,11 +1,11 @@
-const Path = require('path');
+const path = require('path');
 const User = require('../models/user');
 
-exports.getData=(req,res,next)=>{
-    res.sendFile(Path.join(__dirname,'..','views','signup.html'))
+exports.getSignup=(req,res,next)=>{
+    res.sendFile(path.join(__dirname,'..','views','signup.html'))
 }
 
-exports.PostData=(req,res,next)=>{
+exports.PostSignup=(req,res,next)=>{
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.psw;
@@ -20,4 +20,8 @@ exports.PostData=(req,res,next)=>{
     }).catch(()=>{
         res.send('This email already have a account');
     })
+}
+
+exports.getLogin=(req,res)=>{
+    res.sendFile(path.join(__dirname,'..','views','login.html'))
 }
