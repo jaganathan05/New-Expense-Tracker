@@ -8,6 +8,16 @@ router.get('/signup',front_page_controller.getSignup);
 
 router.get('/login',front_page_controller.getLogin);
 
-router.post('/login',front_page_controller.PostLogin)
+router.post('/Home',front_page_controller.PostLogin)
+
+router.post('/expenses',front_page_controller.CreateExpense);
+
+router.get('/expense',front_page_controller.GetExpenses);
+
+router.get('/expenses',front_page_controller.GetCreatePage);
+
+
+
+router.post('/expenses/:id',front_page_controller.DeleteExpense)
 
 module.exports=router;

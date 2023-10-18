@@ -1,0 +1,70 @@
+body {
+    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTj4gk_3kRIltfSuDYwG0EB0PJMKDDECzostw&usqp=CAU');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    font-family: Arial, sans-serif;
+}
+
+.box {
+    margin-top: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; /* Center the form vertically */
+}
+
+.form {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 400px; /* Limit the form's width on larger screens */
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.form-label {
+    color: #3700ff;
+    font-size: 20px;
+}
+
+.expense-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.expense-form input,
+.expense-form select,
+.expense-form button {
+    margin: 10px 0;
+}
+
+button:hover {
+    background-color: rgb(109, 241, 142);
+    color: yellow;
+}
+
+.expenses {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.expense_list {
+    display: flex; 
+    justify-content: space-between; 
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid #3700ff;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px;
+    font-size: 20px;
+    text-align: center;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+#expensedelete{
+    margin-left: 30px;
+}

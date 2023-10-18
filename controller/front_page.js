@@ -1,5 +1,6 @@
 const path = require('path');
 const User = require('../models/user');
+const Expenses = require('../models/expense');
 const bcrypt = require('bcrypt');
 
 exports.getSignup=(req,res,next)=>{
@@ -39,7 +40,7 @@ exports.PostLogin = (req,res)=>{
     }}).then((user)=>{
         bcrypt.compare(psw,user[0].password, async(err,result)=>{
             if(result===true){
-                res.send('Login Succesful')
+                res.redirect(`/expenses`)
             }
             else{
                 res.status(401).send('User not authorized');
@@ -51,3 +52,41 @@ exports.PostLogin = (req,res)=>{
         
 
 }
+
+exports.GetCreatePage = (req,res)=>{
+    res.sendFile(path.join(__dirname,'..','views','create-expense.html'))
+}
+
+exports.CreateExpense = async (req,res)=>{
+    const amount = req.body.amount;
+    const description = req.body.description;
+    const catagory = req.body.catagory
+    try{
+        await Expenses.create({
+            amount,description,catagory
+        })
+        res.redirect('/expenses');
+    }
+    catch(err){
+        console.log(err);
+
+    }}
+
+exports.GetExpenses = (req,res)=>{
+    Expenses.findAll().then((result)=>{
+        res.json(result)
+    })
+}
+
+exports.DeleteExpense = (req,res)=>{
+    const Id = req.params.id;
+    Expenses.findByPk(Id).then((expense)=>{
+        return expense.destroy()
+
+    }).then(()=>{
+        res.redirect('/expenses')
+    })
+    
+        
+}
+

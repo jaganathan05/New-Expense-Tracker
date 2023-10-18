@@ -1,42 +1,68 @@
-body{
-    background-color:aqua;
-    font-family: Arial, Helvetica, sans-serif;
-}
-.box{
+body {
+    background-image: url(https://images.pexels.com/photos/733857/pexels-photo-733857.jpeg?auto=compress&cs=tinysrgb&w=600);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover; /* Updated background-size for better coverage */
     display: flex;
     justify-content: center;
-    align-items:center;
-    height: 600px;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
 }
-.form{
-    border: 20px solid rgb(119, 0, 255);
-    padding: 40px;
-    border-radius: 25px;
 
+.box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 }
-label{
+
+.form {
+    border: 2px solid #6200ff;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.form-title {
     color: #6200ff;
-    font-size: x-large;
-    font-family:serif; 
+    font-size: 24px;
+    font-family: serif;
+    margin-bottom: 20px;
 }
-input[type=text]::placeholder,input[type=email]::placeholder,input[type=password]::placeholder{
-color: rgb(68, 0, 255);
-font-size: medium;
+
+.form-label {
+    font-size: 18px;
+    margin-bottom: 5px;
 }
-input[type=text],input[type=email],input[type=password]{
-    color: rgb(94, 11, 57);
-    font-size:large;
+
+.form-group {
+    margin-bottom: 20px;
 }
-#button:hover{
-    background-color: rgb(2, 59, 16);
+
+.form-control {
+    color: #6200ff;
+    font-size: 16px;
+}
+
+#button:hover {
+    background-color: #043b10;
     color: yellow;
 }
-button{
+
+#button {
     width: 100%;
+    margin-top: 20px;
 }
-#login{
-    padding-left: 40%;
-}
-p{
-    padding-left: 10%;
+
+#login {
+    display: block;
+    text-align: center;
+    font-size: 16px;
+    text-decoration: none;
+    color: #6200ff;
+    margin-top: 20px;
 }
