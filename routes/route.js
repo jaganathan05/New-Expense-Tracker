@@ -1,23 +1,23 @@
 const express = require('express');
 const router = express.Router();
-const front_page_controller = require('../controller/front_page')
+const expense_controller= require('../controller/expense_controller')
+const user_controller = require('../controller/user_controller');
+const auth_middleware = require('../Middleware/auth');
 
-router.post('/signup',front_page_controller.PostSignup);
+router.post('/signup',user_controller.PostSignup);
 
-router.get('/signup',front_page_controller.getSignup);
+router.get('/signup',user_controller.getSignup);
 
-router.get('/login',front_page_controller.getLogin);
+router.get('/login',user_controller.getLogin);
 
-router.post('/Home',front_page_controller.PostLogin)
+router.post('/user/login',user_controller.PostLogin)
 
-router.post('/expenses',front_page_controller.CreateExpense);
+router.post('/expenses',auth_middleware.authentication,expense_controller.CreateExpense);
 
-router.get('/expense',front_page_controller.GetExpenses);
+router.get('/expense',auth_middleware.authentication,expense_controller.GetExpenses);
 
-router.get('/expenses',front_page_controller.GetCreatePage);
+router.get('/expenses',expense_controller.GetCreatePage);
 
-
-
-router.post('/expenses/:id',front_page_controller.DeleteExpense)
+router.delete('/expenses/:id',auth_middleware.authentication,expense_controller.DeleteExpense)
 
 module.exports=router;

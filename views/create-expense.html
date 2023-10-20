@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Expense</title>
-    <link href="create-expense.css" rel="stylesheet">
+    <link href="/css/create-expense.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     
 </head>
 <body class="container">
     <div class="box">
         <div class="form">
-            <form action="/expenses" method="post" >
+            <form onsubmit="CreateExpense(event)" >
                 <label class="form-label">Enter Spended Amount </label>
                 <br>
-                <input type="number" name="amount" placeholder="₹1000" class="form-control">
+                <input type="number" name="amount" id="amount" placeholder="₹1000" class="form-control">
                 <br>
                 <label  class="form-label">Enter Description</label>
                 <br>
-                <input type="text" name="description" placeholder="description"  class="form-control">
+                <input type="text" name="description" placeholder="description" id="description" class="form-control">
                 <br>
                 <label class="form-label" >Select Expense Catagory</label>
                 <br>
-                <select name="catagory" required  class="form-control">
+                <select name="catagory" id="catagory" required   class="form-control">
                     <option>Food</option>
                     <option>Travel</option>
                     <option>Health Suppliments</option>
@@ -39,41 +39,8 @@
     </div>
     <div class="expenses"></div>
     
-    <script >
-        window.addEventListener("DOMContentLoaded", async () => {
-  try {
-    const response = await axios.get('http://localhost:3000/expense'); 
-    console.log(response.data);
-
-    for (let i = 0; i < response.data.length; i++) {
-      showUserDetails(response.data[i]);
-    }
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-function showUserDetails(expenses) {
-  const expense_div = document.querySelector('.expenses');
-  var userDetailsContainer = document.createElement("div");
-  userDetailsContainer.className = 'expense_list';
-  userDetailsContainer.setAttribute("data-id", expenses.id);
-  userDetailsContainer.innerHTML = `<p>₹${expenses.amount} -  ${expenses.description} - ${expenses.catagory}</p>`;
-
-  var deletebtn = document.createElement("form");
-  deletebtn.innerHTML = `
-    <button type="submit" id="expensedelete" class="btn btn-danger btn-sm">Delete</button>
-  `;
-  deletebtn.action = `/expenses/${expenses.id}`;
-  deletebtn.method = "POST"; 
-
-  userDetailsContainer.appendChild(deletebtn);
-  expense_div.appendChild(userDetailsContainer);
-}
-
-
-    </script>
     <script src="https://cdn.jsdelivr.net/npm/axios@1.5.1/dist/axios.min.js"></script>
+    <script src="/js/expense.js"></script>
     
 </body>
 </html>
