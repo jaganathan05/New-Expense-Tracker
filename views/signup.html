@@ -10,18 +10,18 @@
 <body class="container">
     <div class="box">
         <div class="form">
-            <form action="/signup" method="post">
+            <form onsubmit="signup(event)">
                 <label class="form-label">Enter Your Name</label>
                 <br>
-                <input type="text" placeholder="Full Name" class="form-control" name="name" required>
+                <input type="text" placeholder="Full Name" class="form-control" id="name" name="name" required>
                 <br>
                 <label class="form-label" >Enter Your Email</label>
                 <br> 
-                <input type="email" placeholder="Email" class="form-control" name="email" required>
+                <input type="email" placeholder="Email" class="form-control" id="email" name="email" required>
                 <br>
                 <label class="form-label">Enter Your Password</label>
                 <br>
-                <input type="password" placeholder="password" class="form-control" name="psw" required>
+                <input type="password" placeholder="password" class="form-control" id="password" name="psw" required>
                 <br>
                 <button id="button" type="submit" class="btn btn-primary" >SIGNUP</button>
                 <br>
@@ -32,4 +32,6 @@
         </div>
     </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.5.1/dist/axios.min.js"></script>
+<script src="/js/signup.js"></script>
 </html>

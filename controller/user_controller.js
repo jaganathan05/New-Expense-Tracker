@@ -7,26 +7,28 @@ exports.getSignup=(req,res,next)=>{
     res.sendFile(path.join(__dirname,'..','views','signup.html'))
 }
 
-exports.PostSignup=(req,res,next)=>{
-    const name = req.body.name;
-    const email = req.body.email;
-    const password = req.body.psw;
+exports.PostSignup = (req, res, next) => {
+    const { name, email, password } = req.body;
 
-    bcrypt.hash(password,10, async(err,result)=>{
-        await User.create({
-            name: name,
-            email:email,
-            password:result
-        }).then(()=>{
-            
-            res.redirect('/login');
-        }).catch(()=>{
-            res.send('This email already have a account');
-        })
-    })
+    User.findOne({where:{ email: email }}).then(existingUser => {
+        if (existingUser) {
+            return res.status(200).json({ success: false, message: 'This email already has an account' });
+        }
 
-    
-}
+        bcrypt.hash(password, 10, async (err, result) => {
+            await User.create({
+                name: name,
+                email: email,
+                password: result
+            }).then(response => {
+                return res.status(200).json({ success: true, message: 'Signup successful' });
+            }).catch(err => {
+                return res.status(500).json({ success: false, message: 'Signup failed' });
+            });
+        });
+    });
+};
+
 
 exports.getLogin=(req,res)=>{
     res.sendFile(path.join(__dirname,'..','views','login.html'))
@@ -48,10 +50,10 @@ exports.PostLogin = async (req, res) => {
                     token: generateAccesstoken(user.id, user.email)
                 });
             } else {
-                return res.status(401).send('User not authorized');
+                return res.status(401).json({success:false,message: 'User not authorized'});
             }
         } else {
-            return res.status(404).send('User not Found');
+            return res.status(404).send({success:false,message:'User not Found'});
         }
     } catch (error) {
         console.error(error);
