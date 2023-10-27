@@ -2,6 +2,7 @@ const path = require('path');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
+const env = require('dotenv').config();
 
 exports.getSignup=(req,res,next)=>{
     res.sendFile(path.join(__dirname,'..','views','signup.html'))
@@ -66,5 +67,8 @@ exports.PostLogin = async (req, res) => {
     
         
 function generateAccesstoken(id,email){
-    return jwt.sign({userId : id , Email:email},'5kdsojj2jb43bjds023j23jln32')
+    const secretKey = process.env.Token_SecretKey;
+    console.log(secretKey);
+
+    return jwt.sign({userId : id , Email:email},secretKey)
 }

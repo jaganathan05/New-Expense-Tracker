@@ -79,3 +79,43 @@ function showUserDetails(expenses) {
   userDetailsContainer.appendChild(deletebtn);
   expense_div.appendChild(userDetailsContainer);
 }
+
+const premium_btn = document.getElementById('razorpay');
+premium_btn.onclick=async(e)=>{
+  const token = localStorage.getItem('token');
+  const response= await axios.get('http://localhost:3000/purchase/premium_membership',{ headers: { Authorization: token } })
+
+  var options = {
+    key: response.data.key_id,
+    order_id: response.data.order_id,
+
+    handler: async function (response) {
+      console.log('Payment success. Payment ID:', response.razorpay_payment_id);
+      try {
+        await axios.post('http://localhost:3000/purchase/updatetransactionstatus', {
+          order_id: options.order_id,
+          payment_id: response.razorpay_payment_id,
+        }, {
+          headers: {
+            "Authorization": token
+          }
+        });
+        console.log('Payment status updated.');
+        alert('You are a Premium User Now ');
+      } catch (error) {
+        console.error('Payment status update failed:', error);
+        alert("Something went Wrong");
+      }
+    }
+    
+  }
+  const rzp1 = new Razorpay(options);
+  rzp1.open();
+  e.preventDefault();
+
+  rzp1.on("Payment Failed", function (response) {
+    console.log(response);
+    alert("Something went Wrong");
+  });
+
+}
