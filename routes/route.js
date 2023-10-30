@@ -3,6 +3,7 @@ const router = express.Router();
 const expense_controller= require('../controller/expense_controller')
 const user_controller = require('../controller/user_controller');
 const auth_middleware = require('../Middleware/auth');
+const premium_Controller = require('../controller/Premium_controller');
 
 router.post('/signup',user_controller.PostSignup);
 
@@ -18,6 +19,8 @@ router.get('/expense',auth_middleware.authentication,expense_controller.GetExpen
 
 router.get('/expenses',expense_controller.GetCreatePage);
 
-router.delete('/expenses/:id',auth_middleware.authentication,expense_controller.DeleteExpense)
+router.delete('/expenses/:id',auth_middleware.authentication,expense_controller.DeleteExpense);
+
+router.get('/premium/leaderboard',premium_Controller.ShowLeaderBoard);
 
 module.exports=router;
