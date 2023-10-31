@@ -15,6 +15,15 @@ exports.CreateExpense = async (req,res)=>{
         await Expenses.create({
             amount,description,catagory,userId : req.user.id
         })
+        const user = await User.findOne({where: {id:req.user.id}});
+        Total_Amount=Number( user.TotalAmount) + Number(amount);
+        
+        await User.update({
+          TotalAmount : Total_Amount
+        },{where:{
+          id: req.user.id
+        }})
+
         res.redirect('/expenses');
     }
     catch(err){
