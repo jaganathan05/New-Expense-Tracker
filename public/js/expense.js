@@ -139,6 +139,7 @@ Leaderboardbtn.onclick=async(e)=>{
     for (let i=0 ; i<response.data.length;i++){
       showUserLeaderboard(response.data[i]);
     }
+    Leaderboardbtn.textContent="Close LeaderBoard"
   }
   catch(err){
     console.log(err);
