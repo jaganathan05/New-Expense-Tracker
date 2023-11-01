@@ -2,7 +2,12 @@ const path = require('path');
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
-const env = require('dotenv').config();
+require('dotenv').config();
+const Sib = require('sib-api-v3-sdk');
+
+const client = Sib.ApiClient.instance
+const apiKey = client.authentications['api-key']
+apiKey.apiKey = process.env.Email_API_KEY 
 
 exports.getSignup=(req,res,next)=>{
     res.sendFile(path.join(__dirname,'..','views','signup.html'))
@@ -38,7 +43,7 @@ exports.getLogin=(req,res)=>{
 exports.PostLogin = async (req, res) => {
     try {
         const { email, password } = req.body;
-        console.log(email,password);
+        console.log('Email is', email,password);
 
         const user = await User.findOne({ where: { email: email } });
 
@@ -71,4 +76,38 @@ function generateAccesstoken(id,email){
     console.log(secretKey);
 
     return jwt.sign({userId : id , Email:email},secretKey)
+}
+
+
+exports.Forgetpassword = async (req,res,next)=>{
+    const forgetpswemail = req.body.email;
+    const tranEmailApi = new Sib.TransactionalEmailsApi();
+    const sender = {
+    email: 'jaganathanv888@gmail.com',
+    name: 'Jaganathan',
+}
+    const receivers = [
+    {
+        email: forgetpswemail,
+    },
+]
+try{
+    console.log(forgetpswemail);
+    console.log(receivers);
+    const sendmail = await tranEmailApi.sendTransacEmail({
+        sender,
+        to: receivers,
+        subject: 'Forget Password Using Email Verification',
+        textContent: `
+        Your Verification Code : 4567000
+        `
+    })
+    console.log('email sended')
+    return res.json(sendmail)
+    
+}catch(err){
+    console.log(err)
+}
+
+
 }

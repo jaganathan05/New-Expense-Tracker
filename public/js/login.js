@@ -15,3 +15,38 @@ function login(event){
     })
 
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const forgetpswbtn = document.getElementById('forgetpsw');
+    const loginform = document.getElementById('loginform');
+    const forgetform = document.getElementById('forgetform');
+  
+    forgetpswbtn.addEventListener('click', () => {
+      if (loginform.style.display === 'block') {
+        loginform.style.display = 'none';
+        forgetform.style.display = 'block';
+        forgetpswbtn.textContent='close'
+      } else {
+        loginform.style.display = 'block';
+        forgetform.style.display = 'none';
+        forgetpswbtn.textContent='Forget Password'
+      }
+    });
+
+
+
+  });  
+  async function forget(event){
+    event.preventDefault();
+    try{
+    const email =  document.getElementById('forgetemail').value; 
+    const data={
+        email
+    }
+    const response = await axios.post('http://localhost:3000/password/forgotpassword',data);
+    console.log(response);
+    window.location.href='/login';}
+    catch{}
+    
+}
+

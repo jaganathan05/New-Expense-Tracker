@@ -22,6 +22,6 @@ Expense.belongsTo(User);
 User.hasMany(Order);
 const sequelize = require('./helper/database');
 
-sequelize.sync({force: true}).then(()=>{
+sequelize.sync().then(()=>{
     app.listen(3000);
 })

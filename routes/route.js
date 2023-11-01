@@ -23,4 +23,6 @@ router.delete('/expenses/:id',auth_middleware.authentication,expense_controller.
 
 router.get('/premium/leaderboard',premium_Controller.ShowLeaderBoard);
 
+router.post('/password/forgotpassword',user_controller.Forgetpassword);
+
 module.exports=router;
