@@ -3,6 +3,8 @@ const User = require('../models/user');
 const Expenses = require('../models/expense');
 const bcrypt = require('bcrypt');
 const Order = require('../models/order');
+const Sequelize = require('sequelize');
+const sequelize = require('../helper/database');
 
 
 exports.GetCreatePage = (req,res)=>{
@@ -11,25 +13,29 @@ exports.GetCreatePage = (req,res)=>{
 
 exports.CreateExpense = async (req,res)=>{
     const { amount, description, catagory } = req.body;
+    const t = await sequelize.transaction();
     try{
-        await Expenses.create({
+      
+        const expenses = await Expenses.create({
             amount,description,catagory,userId : req.user.id
-        })
-        const user = await User.findOne({where: {id:req.user.id}});
-        Total_Amount=Number( user.TotalAmount) + Number(amount);
+        },{transaction:t})
+        Total_Amount=Number( req.user.TotalAmount) + Number(amount);
         
         await User.update({
           TotalAmount : Total_Amount
         },{where:{
           id: req.user.id
-        }})
-
-        res.redirect('/expenses');
+        },
+        transaction:t})
+         await t.commit();
+       return res.status(200).json({expenses});
     }
     catch(err){
-        console.log(err);
+      await t.rollback();
+      return res.json({err});
+    }
+  }
 
-    }}
 
     exports.GetExpenses = async (req, res) => {
       try {
@@ -61,6 +67,7 @@ exports.CreateExpense = async (req,res)=>{
       
 
 exports.DeleteExpense = async (req, res) => {
+  const t = await sequelize.transaction();
     try {
         const Id = req.params.id;
         const expense = await Expenses.findByPk(Id);
@@ -73,10 +80,18 @@ exports.DeleteExpense = async (req, res) => {
             return res.status(403).json({ success: false, message: 'You are not authorized to delete this expense' });
         }
 
-        
-        expense.destroy();
+        const UpdatedAmount = Number(req.user.TotalAmount) - Number(expense.amount);
+        expense.destroy({transaction:t});
+        await User.update({
+          TotalAmount : UpdatedAmount
+        },{where:{
+          id: req.user.id
+        },
+        transaction:t})
+        await t.commit();
         return res.status(200).json({ success: true, message: 'Expense successfully Deleted' });
     } catch (error) {
+        await t.rollback();
         console.error(error);
         return res.status(500).json({ success: false, message: 'Internal Server Error' });
     }

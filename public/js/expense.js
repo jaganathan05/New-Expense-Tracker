@@ -15,7 +15,10 @@
         const response =await axios.post('http://localhost:3000/expenses',expense_data,{
                 headers: { Authorization: token}})
             console.log(response);
-            window.location.href="/expenses"
+            if(response){
+              window.location.href="/expenses"
+            }
+            
     }
     catch(err){
         console.log(err);
@@ -150,6 +153,7 @@ Leaderboardbtn.onclick=async(e)=>{
 
 function showUserLeaderboard(result) {
   const Leaderboard = document.querySelector('.leaderboard');
+  Leaderboard.style.display='block'
   const leaderboardDetails = document.createElement('div');
   leaderboardDetails.innerHTML = `Name: ${result.name} - Total Amount: ${result.TotalAmount}`;
   Leaderboard.appendChild(leaderboardDetails);
