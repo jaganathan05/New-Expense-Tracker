@@ -25,4 +25,8 @@ router.get('/premium/leaderboard',premium_Controller.ShowLeaderBoard);
 
 router.post('/password/forgotpassword',user_controller.Forgetpassword);
 
+router.get('/password/resetpassword/:id',user_controller.GetForgetpasswordLink);
+
+router.post('/resetpassword',user_controller.PostResetPassword);
+
 module.exports=router;

@@ -1,9 +1,12 @@
 const path = require('path');
 const User = require('../models/user');
+const FPR = require('../models/Forget_Psw_Req');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const Sib = require('sib-api-v3-sdk');
+const{v4: UUID} = require('uuid');
+const sequelize = require('../helper/database');
 
 const client = Sib.ApiClient.instance
 const apiKey = client.authentications['api-key']
@@ -80,7 +83,13 @@ function generateAccesstoken(id,email){
 
 
 exports.Forgetpassword = async (req,res,next)=>{
+    const Id = UUID();
+    console.log('this is uuid',Id)
     const forgetpswemail = req.body.email;
+    const user = await User.findOne({where:{
+        email:forgetpswemail
+    }});
+    
     const tranEmailApi = new Sib.TransactionalEmailsApi();
     const sender = {
     email: 'jaganathanv888@gmail.com',
@@ -92,15 +101,21 @@ exports.Forgetpassword = async (req,res,next)=>{
     },
 ]
 try{
+    
+    const createFPL =  await FPR.create({
+        id:Id,
+        isActive: 'true',
+        userId: user.id
+    }) 
     console.log(forgetpswemail);
     console.log(receivers);
     const sendmail = await tranEmailApi.sendTransacEmail({
         sender,
         to: receivers,
         subject: 'Forget Password Using Email Verification',
-        textContent: `
-        Your Verification Code : 4567000
-        `
+        htmlContent:`
+        <h1>verification link</h1>
+        <a href='http://localhost:3000/password/resetpassword/${Id}'>Visit</a>`
     })
     console.log('email sended')
     return res.json(sendmail)
@@ -110,4 +125,54 @@ try{
 }
 
 
+}
+
+exports.GetForgetpasswordLink =async (req,res,next)=>{ 
+    const Id = req.params.id;
+    console.log(Id)
+    const forgetpasswordrequest = await FPR.findOne({where:{
+        id : Id
+    }})
+    console.log(forgetpasswordrequest.isActive);
+    if (forgetpasswordrequest.isActive==='true'){
+        res.sendFile(path.join(__dirname,'..','views','forgetpassword.html'));
+    }
+    else{
+        res.redirect('/login');
+    }
+
+}
+exports.PostResetPassword=async(req,res,next)=>{
+    const { password, id }= req.body;
+    const UserId = await FPR.findOne({where:{
+        id: id
+    }});
+    console.log(UserId.userId)
+    const t = await sequelize.transaction();
+    try{
+        const setnewpassword = await bcrypt.hash(password,10);
+        const updatepassword = await User.update({
+            password : setnewpassword
+        },{
+            where:{
+                id : UserId.userId
+            },transaction : t
+        }
+        )
+        const updateFP_status = await FPR.update({
+            isActive:'false'
+        },{
+            where:{
+                id:id
+            },transaction:t
+        })
+
+        await t.commit();
+        return res.status(200).json({message: 'Password Changed successfully'})
+    }
+    catch(err){
+        await t.rollback();
+        console.log(err);
+        return res.status(200).json({message: 'something wrong'})
+    }
 }

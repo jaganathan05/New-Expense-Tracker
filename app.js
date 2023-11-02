@@ -5,10 +5,11 @@ const body_parser= require('body-parser');
 const app = express() ;
 
 app.use(express.json());
-
+const sequelize = require('./helper/database');
 const User = require('./models/user');
 const Expense = require('./models/expense');
 const Order = require('./models/order')
+const FPR = require('./models/Forget_Psw_Req');
 const router = require('./routes/route');
 const purchase_router = require('./routes/purchase');
 app.use(express.static(path.join(__dirname,'public')))
@@ -20,7 +21,9 @@ app.use(cors());
 User.hasMany(Expense);
 Expense.belongsTo(User);
 User.hasMany(Order);
-const sequelize = require('./helper/database');
+
+User.hasMany(FPR);
+FPR.belongsTo(User);
 
 sequelize.sync().then(()=>{
     app.listen(3000);
