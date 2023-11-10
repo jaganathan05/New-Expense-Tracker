@@ -29,4 +29,6 @@ router.get('/password/resetpassword/:id',user_controller.GetForgetpasswordLink);
 
 router.post('/resetpassword',user_controller.PostResetPassword);
 
+router.get('/download/expenses',auth_middleware.authentication,expense_controller.DownloadExpenses)
+
 module.exports=router;

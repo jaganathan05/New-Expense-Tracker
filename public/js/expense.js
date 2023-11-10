@@ -31,6 +31,7 @@
 
 window.addEventListener("DOMContentLoaded", async () => {
   try {
+    const Downloadbtn = document.getElementById('downloaddata');
     const token = localStorage.getItem('token'); 
     const Premium_user = document.getElementById('premiumsuccessful');
     const premium_btn = document.getElementById('razorpay');
@@ -44,6 +45,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       Premium_user.style.display='block';
       premium_btn.style.display='none';
       Leaderboardbtn.style.display='block';
+      Downloadbtn.style.display='block';
     }
 
     for (let i = 0; i < response.data.result.length; i++) {
@@ -93,6 +95,7 @@ function showUserDetails(expenses) {
 const Premium_user = document.getElementById('premiumsuccessful');
 const premium_btn = document.getElementById('razorpay');
 const Leaderboardbtn = document.getElementById('leaderboardbtn');
+const Downloadbtn = document.getElementById('downloaddata');
 premium_btn.onclick=async(e)=>{
   const token = localStorage.getItem('token');
   const response= await axios.get('http://localhost:3000/purchase/premium_membership',{ headers: { Authorization: token } })
@@ -115,7 +118,9 @@ premium_btn.onclick=async(e)=>{
         console.log('Payment status updated.');
         premium_btn.style.display='none';
         Premium_user.style.display='block';
-        Leaderboardbtn.style.display='block'
+        Leaderboardbtn.style.display='block';
+        Downloadbtn.style.display='block';
+
         alert('You are a Premium User Now ');
       } catch (error) {
         console.error('Payment status update failed:', error);
@@ -157,4 +162,23 @@ function showUserLeaderboard(result) {
   const leaderboardDetails = document.createElement('div');
   leaderboardDetails.innerHTML = `Name: ${result.name} - Total Amount: ${result.TotalAmount}`;
   Leaderboard.appendChild(leaderboardDetails);
+}
+
+
+Downloadbtn.onclick=async()=>{ 
+    const token = localStorage.getItem('token');
+    const response = await axios.get('http://localhost:3000/download/expenses',{ headers: { Authorization: token }})
+    try{
+      if(response.status === 200){
+        var a = document.createElement('a');
+        a.href= response.data.fileurl;
+        a.download = 'myexpense.csv';
+        a.click();
+      }
+    }
+    catch(err){
+      console.log(err)
+    }
+  
+  
 }

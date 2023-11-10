@@ -1,10 +1,15 @@
 const path = require('path');
 const User = require('../models/user');
 const Expenses = require('../models/expense');
+const FileUrl = require('../models/Save_FileUrl');
 const bcrypt = require('bcrypt');
 const Order = require('../models/order');
 const Sequelize = require('sequelize');
 const sequelize = require('../helper/database');
+const UserServices = require('../services/userservice');
+const S3service = require('../services/S3service');
+require('dotenv').config();
+const AWS = require('aws-sdk');
 
 
 exports.GetCreatePage = (req,res)=>{
@@ -97,3 +102,27 @@ exports.DeleteExpense = async (req, res) => {
     }
 };
 
+exports.DownloadExpenses= async (req,res)=>{
+  
+    try{
+      const UserId = req.user.id  
+      const Expense = await UserServices.getExpenses(req);
+      const stringifyExpenses = JSON.stringify(Expense);
+      const filename = `Expense${UserId}${new Date()}.txt`;
+      const fileurl = await S3service.uploadToS3(stringifyExpenses,filename);
+      const response = await FileUrl.create({
+        fileUrl: fileurl,
+        userId : req.user.id 
+      })
+      res.status(200).json({fileurl,success:true})
+    }
+    catch(err){
+      console.log(err)
+      res.status(500).json({fileurl, success:false, err: err})
+    }
+    
+    
+}
+
+  
+  
