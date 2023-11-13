@@ -36,10 +36,15 @@ window.addEventListener("DOMContentLoaded", async () => {
     const Premium_user = document.getElementById('premiumsuccessful');
     const premium_btn = document.getElementById('razorpay');
     const Leaderboardbtn = document.getElementById('leaderboardbtn');
-
+    const RowsperPage = localStorage.getItem('RowsperPage');
+    let Rows = 10;
+    if(RowsperPage){
+      SelectRows.value=RowsperPage
+       Rows = Number(RowsperPage);
+    }
     // Use the page parameter in the request URL
-    const response = await axios.get(`http://localhost:3000/expense?page=${page}`, {
-      headers: { Authorization: token }
+    const response = await axios.get(`http://localhost:3000/expense?page=${page}&Rows=${Rows}` ,{
+      headers: { Authorization: token} ,data:{Rows}
     }); 
 
     console.log(response.data.message);
@@ -251,4 +256,10 @@ async function getExpenses(pageNo) {
   } catch (error) {
     console.error(error);
   }
+}
+
+const SelectRows = document.getElementById('rowsperpage');
+SelectRows.onchange=async()=>{
+  localStorage.setItem('RowsperPage',SelectRows.value);
+  window.location.href='/expenses'
 }

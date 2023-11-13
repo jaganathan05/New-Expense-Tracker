@@ -45,8 +45,12 @@ exports.CreateExpense = async (req,res)=>{
   exports.GetExpenses = async (req, res) => {
     try {
       const page = req.query.page || 1; // Get the page number from the query parameters
-      const itemsPerPage = 10; // Number of expenses per page
-  
+      let itemsPerPage = 10; // Number of expenses per page
+      const Rows_per_page = req.query.Rows;
+      console.log('rows',Number(Rows_per_page))
+      if(Rows_per_page){
+        itemsPerPage=Number(Rows_per_page);
+      }
       const expenses = await Expenses.findAndCountAll({
         where: {
           UserId: req.user.id
