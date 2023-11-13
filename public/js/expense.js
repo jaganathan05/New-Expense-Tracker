@@ -1,4 +1,3 @@
-
  async function CreateExpense(event){
     event.preventDefault();
     const amount = document.getElementById('amount').value;
@@ -31,23 +30,30 @@
 
 window.addEventListener("DOMContentLoaded", async () => {
   try {
+    const page = 1;  // Set the initial page
     const Downloadbtn = document.getElementById('downloaddata');
     const token = localStorage.getItem('token'); 
     const Premium_user = document.getElementById('premiumsuccessful');
     const premium_btn = document.getElementById('razorpay');
     const Leaderboardbtn = document.getElementById('leaderboardbtn');
-    const response = await axios.get('http://localhost:3000/expense',{
-        headers: { Authorization: token }
+
+    // Use the page parameter in the request URL
+    const response = await axios.get(`http://localhost:3000/expense?page=${page}`, {
+      headers: { Authorization: token }
     }); 
+
     console.log(response.data.message);
     var premium_user_check = response.data.message;
-    if (premium_user_check==="SUCCESSFULL"){
-      Premium_user.style.display='block';
-      premium_btn.style.display='none';
-      Leaderboardbtn.style.display='block';
-      Downloadbtn.style.display='block';
+    
+    if (premium_user_check === "SUCCESSFULL") {
+      Premium_user.style.display = 'block';
+      premium_btn.style.display = 'none';
+      Leaderboardbtn.style.display = 'block';
+      Downloadbtn.style.display = 'block';
     }
+    console.log(response.data.pagination_data)
 
+    showpagination(response.data.pagination_data);  // Pass the response data to showpagination
     for (let i = 0; i < response.data.result.length; i++) {
       showUserDetails(response.data.result[i]);
     }
@@ -57,40 +63,36 @@ window.addEventListener("DOMContentLoaded", async () => {
 });
 
 function showUserDetails(expenses) {
-  const expense_div = document.querySelector('.expenses');
-  var userDetailsContainer = document.createElement("div");
-  userDetailsContainer.className = 'expense_list';
-  userDetailsContainer.setAttribute("data-id", expenses.id);
-  userDetailsContainer.innerHTML = `<p>₹${expenses.amount} -  ${expenses.description} - ${expenses.catagory}</p>`;
+  const expenseTableBody = document.getElementById('expenseTableBody');
 
-  var deletebtn = document.createElement("button");
-  deletebtn.id="expensedelete";
-  deletebtn.className="btn btn-danger btn-sm"
-  deletebtn.type = "submit"
-  deletebtn.textContent = 'Delete'
+  var userDetailsContainer = document.createElement('tr');
+  userDetailsContainer.innerHTML = `
+    <td>${expenses.amount}</td>
+    <td>${expenses.description}</td>
+    <td>${expenses.catagory}</td>
+    <td>
+      <button id="expensedelete" class="btn btn-danger btn-sm" type="submit">Delete</button>
+    </td>`;
 
-  deletebtn.onclick = async  () => {
-    try{
+  userDetailsContainer.querySelector("#expensedelete").onclick = async () => {
+    try {
       const token = localStorage.getItem('token');
-     const response= await axios.delete(`http://localhost:3000/expenses/${expenses.id}`, {
-          headers: {
-              Authorization: token
-          }
-      
-      })
+      const response = await axios.delete(`http://localhost:3000/expenses/${expenses.id}`, {
+        headers: {
+          Authorization: token
+        }
+      });
       alert(response.data.message);
-        window.location.href='/expenses'
+      window.location.href = '/expenses';
+    } catch (err) {
+      console.log(err);
     }
-    catch(err){
-      console.log(err)
-    }
-  }
+  };
 
-
-
-  userDetailsContainer.appendChild(deletebtn);
-  expense_div.appendChild(userDetailsContainer);
+  expenseTableBody.appendChild(userDetailsContainer);
 }
+
+
 
 const Premium_user = document.getElementById('premiumsuccessful');
 const premium_btn = document.getElementById('razorpay');
@@ -181,4 +183,72 @@ Downloadbtn.onclick=async()=>{
     }
   
   
+}
+
+function showpagination({
+  currentPage,
+  hasNextPage,
+  nextPage,
+  hasPreviousPage,
+  PreviousPage,
+  lastPage
+}) {
+  const pagination = document.querySelector('.pagination');
+  pagination.innerHTML = '';
+
+  if (hasPreviousPage) {
+    const btn2 = document.createElement('button');
+    btn2.innerHTML = PreviousPage;
+    btn2.addEventListener('click', () => getExpenses(PreviousPage));
+    pagination.appendChild(btn2);
+  }
+
+  const btn1 = document.createElement('button');
+  btn1.innerHTML = `<h3>${currentPage}</h3>`;
+  btn1.addEventListener('click', () => getExpenses(currentPage));
+  pagination.appendChild(btn1);
+
+  if (hasNextPage) {
+    const btn3 = document.createElement('button');
+    btn3.innerHTML = nextPage;
+    btn3.addEventListener('click', () => getExpenses(nextPage));
+    pagination.appendChild(btn3);
+  }
+}
+
+async function getExpenses(pageNo) {
+  try {
+    const page = pageNo;
+    const Downloadbtn = document.getElementById('downloaddata');
+    const token = localStorage.getItem('token');
+    const Premium_user = document.getElementById('premiumsuccessful');
+    const premium_btn = document.getElementById('razorpay');
+    const Leaderboardbtn = document.getElementById('leaderboardbtn');
+
+    // Use the page parameter in the request URL
+    const response = await axios.get(`http://localhost:3000/expense?page=${pageNo}`, {
+      headers: { Authorization: token }
+    });
+
+    console.log(response.data.message);
+    var premium_user_check = response.data.message;
+
+    if (premium_user_check === "SUCCESSFULL") {
+      Premium_user.style.display = 'block';
+      premium_btn.style.display = 'none';
+      Leaderboardbtn.style.display = 'block';
+      Downloadbtn.style.display = 'block';
+    }
+    console.log(response.data.pagination_data);
+
+    showpagination(response.data.pagination_data); 
+    const expenseTableBody = document.getElementById('expenseTableBody');
+    expenseTableBody.innerHTML = ''; 
+
+    for (let i = 0; i < response.data.result.length; i++) {
+      showUserDetails(response.data.result[i], expenseTableBody);
+    }
+  } catch (error) {
+    console.error(error);
+  }
 }

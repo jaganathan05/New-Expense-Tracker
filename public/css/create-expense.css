@@ -4,6 +4,7 @@ body {
     background-attachment: fixed;
     background-size: cover;
     font-family: Arial, sans-serif;
+    margin: 0;
 }
 
 .box {
@@ -11,7 +12,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column; /* Center the form vertically */
+    flex-direction: column;
 }
 
 .form {
@@ -19,7 +20,7 @@ body {
     padding: 20px;
     border-radius: 10px;
     width: 80%;
-    max-width: 400px; /* Limit the form's width on larger screens */
+    max-width: 400px;
     text-align: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
@@ -42,35 +43,29 @@ body {
 
 button:hover {
     background-color: rgb(109, 241, 142);
-    color: yellow;
-}
-
-.expenses {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
+    color: #fff;
+    cursor: pointer;
 }
 
 .expense_list {
-    display: flex; 
-    justify-content: space-between; 
+    display: table-row;
     background-color: rgba(255, 255, 255, 0.8);
     border: 1px solid #3700ff;
     border-radius: 5px;
-    padding: 10px;
     margin: 5px;
     font-size: 20px;
     text-align: center;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
-#expensedelete{
+#expensedelete {
     margin-left: 30px;
+    cursor: pointer;
 }
-/* For the Premium and Leaderboard buttons */
+
 #razorpay,
-#leaderboardbtn {
+#leaderboardbtn,
+#downloaddata {
     display: block;
     width: 100%;
     margin-top: 10px;
@@ -83,7 +78,6 @@ button:hover {
     cursor: pointer;
 }
 
-/* Style for the Premium User message */
 #premiumsuccessful {
     display: none;
     text-align: center;
@@ -92,7 +86,6 @@ button:hover {
     margin-top: 10px;
 }
 
-/* Style for the leaderboard details */
 .leaderboard div {
     background-color: rgba(255, 255, 255, 0.8);
     border: 1px solid #3700ff;
@@ -102,6 +95,32 @@ button:hover {
     font-size: 18px;
     text-align: center;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Table Styles */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #ccc;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #eee;
+}
+
+.header {
+    text-align: center;
 }
 
 /* Mobile-friendly adjustments */

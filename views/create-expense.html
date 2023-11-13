@@ -45,12 +45,31 @@
         </div>
         
     </div>
-    <div class="expenses">
+    <div >
         <div>Expenses</div>
+        <table>
+            <thead>
+              <tr >
+                <th>Amount</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody id="expenseTableBody" class="expenses">
+                
+
+            </tbody>
+
+
+        </table>
     </div>
     <div class="leaderboard" style="display: none;">
         LeaderBoard</div>
     
+    <!-- Add this HTML for pagination container -->
+<div class="pagination"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/axios@1.5.1/dist/axios.min.js"></script>
     <script src="/js/expense.js"></script>
     

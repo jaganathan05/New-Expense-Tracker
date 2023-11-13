@@ -42,32 +42,52 @@ exports.CreateExpense = async (req,res)=>{
   }
 
 
-    exports.GetExpenses = async (req, res) => {
-      try {
-        const expenses = await Expenses.findAll({
-          where: {
-            UserId: req.user.id
-          }
-        });
-    
-        const order = await Order.findOne({
-          where: {
-            UserId: req.user.id,
-            status: "SUCCESSFULL"
-          }
-        });
-    
-    
-        if (!order) {
-          return res.json({ result: expenses, message: 'No Premium' });
-        } else {
-          return res.json({ result: expenses, message: 'SUCCESSFULL' });
+  exports.GetExpenses = async (req, res) => {
+    try {
+      const page = req.query.page || 1; // Get the page number from the query parameters
+      const itemsPerPage = 10; // Number of expenses per page
+  
+      const expenses = await Expenses.findAndCountAll({
+        where: {
+          UserId: req.user.id
+        },
+        limit: itemsPerPage, // Limit the number of results per page
+        offset: (page - 1) * itemsPerPage // Calculate the offset based on the page number
+      });
+  
+      const order = await Order.findOne({
+        where: {
+          UserId: req.user.id,
+          status: "SUCCESSFULL"
         }
-      } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Internal server error' });
+      });
+  
+      if (!order) {
+        return res.json({
+          result: expenses.rows,
+          totalCount: expenses.count,
+          message: 'No Premium'
+        });
+      } else {
+        return res.json({
+          result: expenses.rows,
+          pagination_data :{
+            currentPage: Number(page),
+            hasNextPage: itemsPerPage*Number(page)< expenses.count,
+            nextPage: Number(page)+1,
+            hasPreviousPage:Number( page) > 1,
+            PreviousPage: Number(page)-1,
+            lastPage: Math.ceil(expenses.count/itemsPerPage)}
+          ,
+          message: 'SUCCESSFULL'
+        });
       }
+      
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Internal server error' });
     }
+  };
     
       
 
