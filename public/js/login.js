@@ -49,4 +49,12 @@ document.addEventListener('DOMContentLoaded', function() {
     catch{}
     
 }
-
+const password = document.getElementById('password')
+const Showpasswordbtn= document.getElementById('showpassword');
+Showpasswordbtn.onclick=()=>{
+  if(Showpasswordbtn.checked){
+    password.type='text';
+  }else{
+    password.type='password'
+  }
+}

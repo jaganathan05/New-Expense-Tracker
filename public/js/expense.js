@@ -147,29 +147,33 @@ premium_btn.onclick=async(e)=>{
 
 }
 
-Leaderboardbtn.onclick=async(e)=>{
-  try{
-    const response = await axios.get('http://localhost:3000/premium/leaderboard');
-    console.log(response.data);
-    for (let i=0 ; i<response.data.length;i++){
-      showUserLeaderboard(response.data[i]);
+Leaderboardbtn.onclick = async (e) => {
+  try {
+    if (Leaderboardbtn.textContent === 'Show Leaderboard') {
+      const response = await axios.get('http://localhost:3000/premium/leaderboard');
+      console.log(response.data);
+      for (let i = 0; i < response.data.length; i++) {
+        showUserLeaderboard(response.data[i]);
+      }
+      Leaderboardbtn.textContent = "Close LeaderBoard";
+    } else if (Leaderboardbtn.textContent === "Close LeaderBoard") {
+      const Leaderboard = document.querySelector('.leaderboard');
+      Leaderboard.innerHTML = ``;  // Corrected the variable name here
+      Leaderboardbtn.textContent = "Show Leaderboard";
     }
-    Leaderboardbtn.textContent="Close LeaderBoard"
-  }
-  catch(err){
+  } catch (err) {
     console.log(err);
-
   }
-
 }
 
 function showUserLeaderboard(result) {
   const Leaderboard = document.querySelector('.leaderboard');
-  Leaderboard.style.display='block'
+  Leaderboard.style.display = 'block';
   const leaderboardDetails = document.createElement('div');
   leaderboardDetails.innerHTML = `Name: ${result.name} - Total Amount: ${result.TotalAmount}`;
   Leaderboard.appendChild(leaderboardDetails);
 }
+
 
 
 Downloadbtn.onclick=async()=>{ 

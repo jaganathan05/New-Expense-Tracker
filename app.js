@@ -3,6 +3,10 @@ const path = require('path');
 const cors = require('cors');
 const body_parser= require('body-parser'); 
 const app = express() ;
+const helmet = require('helmet');
+const compression = require('compression');
+const morgan = require('morgan');
+const fs = require('fs');
 
 app.use(express.json());
 const sequelize = require('./helper/database');
@@ -18,6 +22,15 @@ app.use(body_parser.urlencoded({ extended: false }));
 app.use(router);
 app.use('/purchase',purchase_router);
 app.use(cors());
+app.use(helmet());// set secure headers
+
+const accessLogStream = fs.createWriteStream(
+    path.join(__dirname,'access.log'),
+    {flags: 'a'}
+)
+
+app.use(compression());
+app.use(morgan('combined',{stream:accessLogStream }));
 
 User.hasMany(Expense);
 Expense.belongsTo(User);

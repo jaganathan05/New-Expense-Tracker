@@ -1,5 +1,5 @@
-const getExpenses = (req,res)=>{
-    return req.user.getExpenses();
+const getExpenses = (req,where)=>{
+    return req.user.getExpenses(where);
 }
 
 module.exports={
