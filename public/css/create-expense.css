@@ -1,5 +1,5 @@
 body {
-    background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTj4gk_3kRIltfSuDYwG0EB0PJMKDDECzostw&usqp=CAU');
+    background-image: url('https://images.pexels.com/photos/1762851/pexels-photo-1762851.jpeg?auto=compress&cs=tinysrgb&w=600');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
@@ -96,7 +96,6 @@ button:hover {
     text-align: center;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
-
 /* Table Styles */
 table {
     border-collapse: collapse;
@@ -105,19 +104,42 @@ table {
 }
 
 th, td {
-    border: 1px solid black;
-    padding: 8px;
+    border: 1px solid #ddd; /* Updated border color */
+    padding: 12px; /* Increased padding for better spacing */
     text-align: center;
 }
 
 th {
-    background-color: #ccc;
+    background-color: #4CAF50; /* Updated background color for header */
+    color: white;
     font-weight: bold;
 }
 
 tr:nth-child(even) {
-    background-color: #eee;
+    background-color: #f2f2f2; /* Updated background color for even rows */
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    color: #fff;
+    padding: 8px 16px;
+    text-decoration: none;
+    background-color: #007BFF;
+    border-radius: 5px;
+    margin: 0 4px;
+    cursor: pointer;
+}
+
+.pagination a:hover {
+    background-color: #0056b3;
+}
+
 
 .header {
     text-align: center;
