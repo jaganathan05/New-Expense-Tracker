@@ -115,7 +115,7 @@ try{
         subject: 'Forget Password Using Email Verification',
         htmlContent:`
         <h1>verification link</h1>
-        <a href='http://localhost:3000/password/resetpassword/${Id}'>Visit</a>`
+        <a href='http://3.109.157.131:3000/password/resetpassword/${Id}'>Visit</a>`
     })
     console.log('email sended')
     return res.json(sendmail)

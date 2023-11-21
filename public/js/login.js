@@ -6,7 +6,7 @@ function login(event){
         email , password
     }
     console.log(logindata)
-    axios.post('http://localhost:3000/user/login',logindata).then((Response)=>{
+    axios.post('http://3.109.157.131:3000/user/login',logindata).then((Response)=>{
         alert(Response.data.message);
         localStorage.setItem('token',Response.data.token)
         window.location.href='/expenses'
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const data={
         email
     }
-    const response = await axios.post('http://localhost:3000/password/forgotpassword',data);
+    const response = await axios.post('http://3.109.157.131:3000/password/forgotpassword',data);
     console.log(response);
     window.location.href='/login';}
     catch{}

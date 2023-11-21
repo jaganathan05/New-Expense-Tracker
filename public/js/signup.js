@@ -9,7 +9,7 @@ function signup(event){
     }
     console.log(signupdata);
     
-         axios.post('http://localhost:3000/signup',signupdata).then((response)=>{
+         axios.post('http://3.109.157.131:3000/signup',signupdata).then((response)=>{
             alert(response.data.message);
             window.location.href='/login';
 
