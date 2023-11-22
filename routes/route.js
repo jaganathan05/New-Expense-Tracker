@@ -31,4 +31,6 @@ router.post('/resetpassword',user_controller.PostResetPassword);
 
 router.get('/download/expenses',auth_middleware.authentication,expense_controller.DownloadExpenses)
 
+router.get('/',user_controller.getLogin)
+
 module.exports=router;
