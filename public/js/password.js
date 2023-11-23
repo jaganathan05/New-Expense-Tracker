@@ -8,7 +8,7 @@ async function forgetpassword(event){
     };
     console.log(data);
     try{
-        const response = await axios.post('http://3.109.157.131:3000/resetpassword',data);
+        const response = await axios.post('http://13.200.1.178:3000/resetpassword',data);
         alert(`${response.data.message}`);
         window.location.href='/login';
     }

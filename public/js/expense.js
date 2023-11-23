@@ -11,7 +11,7 @@
     console.log(expense_data)
     const token = localStorage.getItem('token'); 
     try{
-        const response =await axios.post('http://3.109.157.131:3000/expenses',expense_data,{
+        const response =await axios.post('http://13.200.1.178:3000/expenses',expense_data,{
                 headers: { Authorization: token}})
             console.log(response);
             if(response){
@@ -43,7 +43,7 @@ window.addEventListener("DOMContentLoaded", async () => {
        Rows = Number(RowsperPage);
     }
     // Use the page parameter in the request URL
-    const response = await axios.get(`http://3.109.157.131:3000/expense?page=${page}&Rows=${Rows}` ,{
+    const response = await axios.get(`http://13.200.1.178:3000/expense?page=${page}&Rows=${Rows}` ,{
       headers: { Authorization: token} ,data:{Rows}
     }); 
 
@@ -82,7 +82,7 @@ function showUserDetails(expenses) {
   userDetailsContainer.querySelector("#expensedelete").onclick = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.delete(`http://3.109.157.131:3000/expenses/${expenses.id}`, {
+      const response = await axios.delete(`http://13.200.1.178:3000/expenses/${expenses.id}`, {
         headers: {
           Authorization: token
         }
@@ -105,7 +105,7 @@ const Leaderboardbtn = document.getElementById('leaderboardbtn');
 const Downloadbtn = document.getElementById('downloaddata');
 premium_btn.onclick=async(e)=>{
   const token = localStorage.getItem('token');
-  const response= await axios.get('http://3.109.157.131:3000/purchase/premium_membership',{ headers: { Authorization: token } })
+  const response= await axios.get('http://13.200.1.178:3000/purchase/premium_membership',{ headers: { Authorization: token } })
 
   var options = {
     key: response.data.key_id,
@@ -114,7 +114,7 @@ premium_btn.onclick=async(e)=>{
     handler: async function (response) {
       console.log('Payment success. Payment ID:', response.razorpay_payment_id);
       try {
-        await axios.post('http://3.109.157.131:3000/purchase/updatetransactionstatus', {
+        await axios.post('http://13.200.1.178:3000/purchase/updatetransactionstatus', {
           order_id: options.order_id,
           payment_id: response.razorpay_payment_id,
         }, {
@@ -150,7 +150,7 @@ premium_btn.onclick=async(e)=>{
 Leaderboardbtn.onclick = async (e) => {
   try {
     if (Leaderboardbtn.textContent === 'Show Leaderboard') {
-      const response = await axios.get('http://3.109.157.131:3000/premium/leaderboard');
+      const response = await axios.get('http://13.200.1.178:3000/premium/leaderboard');
       console.log(response.data);
       for (let i = 0; i < response.data.length; i++) {
         showUserLeaderboard(response.data[i]);
@@ -178,7 +178,7 @@ function showUserLeaderboard(result) {
 
 Downloadbtn.onclick=async()=>{ 
     const token = localStorage.getItem('token');
-    const response = await axios.get('http://3.109.157.131:3000/download/expenses',{ headers: { Authorization: token }})
+    const response = await axios.get('http://13.200.1.178:3000/download/expenses',{ headers: { Authorization: token }})
     try{
       if(response.status === 200){
         var a = document.createElement('a');
@@ -235,7 +235,7 @@ async function getExpenses(pageNo) {
     const Leaderboardbtn = document.getElementById('leaderboardbtn');
 
     // Use the page parameter in the request URL
-    const response = await axios.get(`http://3.109.157.131:3000/expense?page=${pageNo}`, {
+    const response = await axios.get(`http://13.200.1.178:3000/expense?page=${pageNo}`, {
       headers: { Authorization: token }
     });
 
