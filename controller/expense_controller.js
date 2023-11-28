@@ -70,7 +70,14 @@ exports.CreateExpense = async (req,res)=>{
         return res.json({
           result: expenses.rows,
           totalCount: expenses.count,
-          message: 'No Premium'
+          message: 'No Premium',
+          pagination_data :{
+            currentPage: Number(page),
+            hasNextPage: itemsPerPage*Number(page)< expenses.count,
+            nextPage: Number(page)+1,
+            hasPreviousPage:Number( page) > 1,
+            PreviousPage: Number(page)-1,
+            lastPage: Math.ceil(expenses.count/itemsPerPage)}
         });
       } else {
         return res.json({
@@ -142,7 +149,7 @@ exports.DownloadExpenses= async (req,res)=>{
     }
     catch(err){
       console.log(err)
-      res.status(500).json({fileurl, success:false, err: err})
+      res.status(500).json({ fileurl, success:false, err: err})
     }
     
     
